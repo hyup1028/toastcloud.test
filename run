@@ -18,24 +18,31 @@ case $key in
 esac
 done
 
-if [ -z ${SERVICE_ZONE} ] ; then
-    SERVICEZONE="real"
-fi
-
-echo "APPKEY = ${APP_KEY}"
-echo "SERVICEZONE = ${SERVICE_ZONE}"
-
 if [ -z ${APP_KEY} ] ; then
     echo "Please input appkey."
-    exit 0
+    exit 1
 fi
+if [ ${APP_KEY} == "LOG_N_CRASH_SEARCH_APPKEY" ] ; then
+    echo "Please input appkey."
+    exit 1
+fi
+echo "APPKEY = ${APP_KEY}"
 
-#Dev Test
-COMMAND_PATH="${PROJECT_DIR}/../Pods/ToastLogger/toastcloud.sdk-*/SymbolUploader "
+if [ -z ${SERVICE_ZONE} ] ; then
+    SERVICE_ZONE="real"
+fi
+echo "SERVICEZONE = ${SERVICE_ZONE}"
 
-#Release
-#COMMAND_PATH="${PODS_ROOT}/ToastLogger/toastcloud.sdk-*/SymbolUploader "
+if [ -z ${MARKETING_VERSION} ] ; then
+    echo "Set marketing version in Xcode project."
+    exit 1
+fi
+echo "VERSION = ${MARKETING_VERSION}"
+
+COMMAND_PATH="${PODS_ROOT}/ToastLoggerTest/toastcloud.test-*/SymbolUploader "
 
 ARGUMENTS="--app-key ${APP_KEY} --project-version ${MARKETING_VERSION}  --service-zone ${SERVICE_ZONE} ${TARGET_BUILD_DIR}"
 
 eval $COMMAND_PATH$ARGUMENTS
+
+#${PODS_ROOT}/ToastLoggerTest/toastcloud.test-*/run --app-key LOG_N_CRASH_SEARCH_APPKEY
