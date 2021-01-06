@@ -1,4 +1,9 @@
 #!/bin/bash
+if [ ! -d ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME} ]; then
+    echo "Couldn't find dsym file: ${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}"
+    exit 1
+fi
+
 while [[ $# -gt 0 ]]
 do
 key="$1"
